@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fisiodero em Alphaville</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,760&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#F5F4F6; --surface:#FFFFFF; --sunk:#EEEBF0;
+    --ink:#1D1A20; --ink-2:#544D59; --ink-3:#857D8B;
+    --line:#E3DEE6;
+    --accent:#6B2D5C; --accent-ink:#FFFFFF; --accent-soft:#F3E8F0;
+    --s1:#C9A2BD; --s2:#9A5486; --s3:#6B2D5C;
+    --wa:#DCF8C6; --wa-ink:#1F2B1A;
+    --hero:#2A1726; --hero-ink:#FBF6FA; --hero-2:#D9C3D3;
+    --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --body:"Figtree", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#151217; --surface:#1F1A22; --sunk:#1A161C;
+      --ink:#F2EEF4; --ink-2:#C4BBC9; --ink-3:#938A99;
+      --line:#342D39;
+      --accent:#DDA3CB; --accent-ink:#241320; --accent-soft:#2D2130;
+      --s1:#6E5066; --s2:#A86695; --s3:#DDA3CB;
+      --wa:#1F3A26; --wa-ink:#DDF2D6;
+      --hero:#231420; --hero-ink:#FBF6FA; --hero-2:#CDB3C6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#151217; --surface:#1F1A22; --sunk:#1A161C;
+    --ink:#F2EEF4; --ink-2:#C4BBC9; --ink-3:#938A99;
+    --line:#342D39;
+    --accent:#DDA3CB; --accent-ink:#241320; --accent-soft:#2D2130;
+    --s1:#6E5066; --s2:#A86695; --s3:#DDA3CB;
+    --wa:#1F3A26; --wa-ink:#DDF2D6;
+    --hero:#231420; --hero-ink:#FBF6FA; --hero-2:#CDB3C6;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.62 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding-inline:24px}
+  p{margin:0 0 14px}
+  strong{font-weight:650}
+  h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+
+  /* hero */
+  .hero{background:var(--hero);color:var(--hero-ink);padding-block:72px 64px}
+  .kick{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--hero-2)}
+  .hero h1{font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:-.03em;font-weight:760;margin:18px 0 20px;max-width:16ch}
+  .hero .lead{font-size:19px;line-height:1.55;color:var(--hero-2);max-width:58ch;margin:0}
+  .hero .by{margin-top:34px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:13.5px;color:var(--hero-2)}
+
+  /* sections */
+  section{padding-top:72px}
+  .eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:10px}
+  h2{font-size:clamp(26px,3.6vw,36px);line-height:1.14;letter-spacing:-.025em;font-weight:760;margin-bottom:18px;max-width:22ch}
+  .intro{font-size:18px;color:var(--ink-2);max-width:64ch}
+  .intro strong{color:var(--ink)}
+
+  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 0}
+  .t{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .t .lbl{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink-3);margin-bottom:8px}
+  .t h4{font-size:19px;letter-spacing:-.015em;font-weight:650;margin-bottom:6px}
+  .t p{font-size:15px;color:var(--ink-2);margin:0}
+  .t.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .t.on .lbl,.t.on p{color:var(--accent-ink);opacity:.85}
+
+  .quote{font-family:var(--display);font-size:clamp(22px,3vw,29px);line-height:1.25;letter-spacing:-.02em;font-weight:650;
+    margin:30px 0;padding:28px 0;border-block:1px solid var(--line);max-width:30ch}
+  .quote em{font-style:normal;color:var(--accent)}
+
+  .cycle{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 0}
+  .cycle span{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:7px 14px;font-size:14.5px;font-weight:600}
+  .cycle span.hl{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+  .cycle i{font-style:normal;color:var(--ink-3)}
+
+  /* stages */
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:28px 0 0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+  .st{padding:24px 22px;border-left:1px solid var(--line)}
+  .st:first-child{border-left:none}
+  .st .bar{height:6px;border-radius:99px;margin-bottom:18px}
+  .st:nth-child(1) .bar{background:var(--s1)} .st:nth-child(2) .bar{background:var(--s2)} .st:nth-child(3) .bar{background:var(--s3)}
+  .st h3{font-size:22px;letter-spacing:-.02em;font-weight:760;margin-bottom:2px}
+  .st .sub{font-size:13px;color:var(--ink-3);font-weight:600;margin-bottom:14px}
+  .st dl{margin:0;font-size:14.5px}
+  .st dt{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink-3);margin-top:12px}
+  .st dd{margin:2px 0 0;color:var(--ink-2)}
+  .aside{font-size:15px;color:var(--ink-2);margin-top:16px;max-width:70ch}
+
+  /* service lines */
+  .line{background:var(--surface);border:1px solid var(--line);border-radius:18px;margin:22px 0 0;overflow:hidden}
+  .line .hd{padding:24px 26px 20px}
+  .line .hd h3{font-size:24px;letter-spacing:-.022em;font-weight:760;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .chips span{font-size:13px;font-weight:600;background:var(--sunk);border-radius:8px;padding:4px 10px;color:var(--ink-2)}
+  .chips span b{color:var(--accent);font-weight:700}
+  .role{font-size:15px;color:var(--ink-2);margin:0}
+  .role strong{color:var(--ink)}
+  .rows{border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line)}
+  .row:first-child{border-top:none}
+  .row .k{padding:16px 0 16px 26px;display:flex;align-items:flex-start;gap:10px;font-weight:700;font-size:14px}
+  .row .k::before{content:"";width:10px;height:10px;border-radius:99px;margin-top:6px;flex:none}
+  .row.r1 .k::before{background:var(--s1)} .row.r2 .k::before{background:var(--s2)} .row.r3 .k::before{background:var(--s3)}
+  .row ul{margin:0;padding:14px 26px 14px 18px;list-style:none;font-size:15px;color:var(--ink-2)}
+  .row li{padding:3px 0 3px 16px;position:relative}
+  .row li::before{content:"–";position:absolute;left:0;color:var(--ink-3)}
+  .cta{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:20px 26px;background:var(--accent-soft)}
+  .cta .lbl{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:4px}
+  .cta .say{font-family:var(--display);font-size:18px;line-height:1.3;font-weight:650;letter-spacing:-.012em}
+  .bubble{background:var(--wa);color:var(--wa-ink);border-radius:12px 12px 2px 12px;padding:9px 13px;font-size:14px;max-width:260px;line-height:1.4}
+  .bubble small{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;font-weight:700;margin-bottom:2px}
+
+  /* landing mockup */
+  .lp{display:grid;grid-template-columns:320px 1fr;gap:34px;align-items:start;margin-top:28px}
+  .phone{background:var(--ink);border-radius:36px;padding:12px;max-width:100%}
+  .screen{background:var(--surface);border-radius:26px;overflow:hidden}
+  .screen .top{background:var(--hero);color:var(--hero-ink);padding:26px 20px 22px}
+  .screen .top .brand{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--hero-2)}
+  .screen .top h4{font-size:22px;line-height:1.15;letter-spacing:-.02em;font-weight:760;margin:12px 0 10px}
+  .screen .top p{font-size:13px;line-height:1.5;color:var(--hero-2);margin:0}
+  .form{padding:18px 20px 22px;display:grid;gap:9px}
+  .field{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--ink-3)}
+  .opts{display:flex;flex-wrap:wrap;gap:6px}
+  .opts span{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--ink-2)}
+  .opts span.sel{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+  .qlab{font-size:12px;color:var(--ink-2);font-weight:600;margin-top:4px}
+  .btn{background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:12px;text-align:center;font-weight:700;font-size:14px;margin-top:4px}
+  .fine{font-size:11px;color:var(--ink-3);text-align:center}
+
+  .why{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+  .why li{padding-left:20px;position:relative;font-size:15.5px;color:var(--ink-2)}
+  .why li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:2px;background:var(--accent)}
+  .why li strong{color:var(--ink)}
+  .rec{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:22px}
+  .rec h4{font-size:16px;font-weight:650;margin-bottom:8px}
+  .rec ul{margin:0;padding-left:18px;font-size:15px;color:var(--ink-2)}
+  .rec li{margin:3px 0}
+
+  /* rules + rhythm */
+  .two{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:26px}
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .box h4{font-size:18px;font-weight:650;letter-spacing:-.012em;margin-bottom:12px}
+  .box ul{margin:0;padding-left:18px;font-size:15px;color:var(--ink-2)}
+  .box li{margin:5px 0}
+  .mix{display:grid;gap:8px}
+  .mix div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:15px;padding:8px 0;border-top:1px solid var(--line)}
+  .mix div:first-child{border-top:none}
+  .mix b{font-family:var(--display);font-size:20px;font-weight:760;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .mix .tot{font-weight:700;color:var(--ink)}
+
+  /* plans */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+  .plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 22px;position:relative}
+  .plan.hi{border:2px solid var(--accent)}
+  .plan .flag{position:absolute;top:-11px;left:22px;background:var(--accent);color:var(--accent-ink);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:99px}
+  .plan .nm{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+  .plan .pr{font-family:var(--display);font-size:32px;font-weight:760;letter-spacing:-.03em;margin:8px 0 0;font-variant-numeric:tabular-nums}
+  .plan .per{font-size:13px;color:var(--ink-3);margin-bottom:12px}
+  .plan p{font-size:15px;color:var(--ink-2);margin:0}
+  .season{margin-top:18px;background:var(--accent-soft);border-radius:14px;padding:18px 22px;font-size:15.5px}
+  .season strong{color:var(--accent)}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+  .kpis div{border-top:3px solid var(--accent);padding-top:12px;font-size:15px;color:var(--ink-2)}
+  .kpis b{display:block;color:var(--ink);font-weight:650;margin-bottom:2px}
+
+  .qs{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+  .qs li{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;font-size:15px;color:var(--ink-2)}
+  .qs li b{display:block;color:var(--ink);font-weight:650;font-size:16px;margin-bottom:2px}
+
+  .close{background:var(--hero);color:var(--hero-ink);border-radius:22px;padding:44px 40px;margin-top:64px}
+  .close h2{color:var(--hero-ink);max-width:24ch}
+  .close p{color:var(--hero-2);font-size:17px;max-width:60ch}
+  .close .sig{margin-top:26px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:14px;color:var(--hero-2)}
+  footer{padding-block:36px 60px;font-size:13px;color:var(--ink-3)}
+
+  /* endereços */
+  .addr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .pin{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .pin .lbl{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:6px}
+  .pin .ad{font-family:var(--display);font-size:21px;font-weight:760;letter-spacing:-.02em;line-height:1.2}
+  .pin p{font-size:14.5px;color:var(--ink-2);margin:6px 0 0}
+
+  /* orçamento */
+  .strip{display:flex;height:46px;border-radius:12px;overflow:hidden;margin-top:26px;border:1px solid var(--line)}
+  .strip div{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden}
+  .c1{background:#C9A2BD;color:#2A1726!important} .c2{background:#9A5486} .c3{background:#6B2D5C} .c4{background:#4A6B82} .c5{background:#3F7A5C}
+  .legend{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:14px}
+  .legend div{font-size:14px;color:var(--ink-2);line-height:1.4}
+  .legend b{display:block;font-family:var(--display);font-size:20px;font-weight:760;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:1px}
+  .tbl-wrap{overflow-x:auto;margin-top:24px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px;font-variant-numeric:tabular-nums}
+  th,td{padding:12px 16px;text-align:right;border-top:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{border-top:none;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700;background:var(--sunk)}
+  td{color:var(--ink-2)}
+  td:first-child{color:var(--ink);font-weight:600}
+  tr.sum td{color:var(--ink);font-weight:700;background:var(--accent-soft)}
+  td.hi,th.hi{background:var(--accent-soft);color:var(--ink);font-weight:650}
+  thead th.hi{color:var(--accent)}
+  .x{font-family:var(--display);font-weight:760;color:var(--accent)}
+  .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+  .gate{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .gate .v{font-family:var(--display);font-size:22px;font-weight:760;letter-spacing:-.02em;margin-bottom:4px}
+  .gate p{font-size:14.5px;color:var(--ink-2);margin:0}
+  .gate.up{border-color:#3F7A5C} .gate.up .v{color:#3F7A5C}
+  .gate.hold .v{color:var(--ink)}
+  .gate.down{border-color:#A2463F} .gate.down .v{color:#A2463F}
+  .prem{margin-top:20px;font-size:14px;color:var(--ink-3);max-width:78ch;line-height:1.55}
+  .prem b{color:var(--ink-2)}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .gate.up .v{color:#7FC4A0} :root:not([data-theme="light"]) .gate.down .v{color:#E08A82} }
+  :root[data-theme="dark"] .gate.up .v{color:#7FC4A0} :root[data-theme="dark"] .gate.down .v{color:#E08A82}
+
+  @media (max-width:820px){
+    body{font-size:16px}
+    .hero{padding-block:52px 46px}
+    .trio,.stages,.plans,.two,.lp{grid-template-columns:1fr}
+    .st{border-left:none;border-top:1px solid var(--line)} .st:first-child{border-top:none}
+    .kpis{grid-template-columns:1fr 1fr}
+    .addr,.gates{grid-template-columns:1fr} .legend{grid-template-columns:1fr 1fr}
+    .row{grid-template-columns:1fr} .row .k{padding:14px 20px 0} .row ul{padding:6px 20px 14px 20px}
+    .line .hd{padding:20px}
+    .cta{grid-template-columns:1fr;padding:18px 20px}
+    .bubble{max-width:100%}
+    .phone{max-width:320px}
+    .close{padding:32px 22px}
+    .wrap{padding-inline:18px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">Fisiodero · Plano de marketing e tráfego pago · Alphaville</div>
+    <h1>Quem compra na Fisiodero ainda não sabe que pode se cuidar nela.</h1>
+    <p class="lead">Um plano para transformar a loja que Alphaville já conhece no endereço de beleza que Alphaville passa a frequentar, com o roteiro do que gravar em cada etapa.</p>
+    <div class="by">Preparado por Felipe Cavalcanti · setembro de 2026</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <div class="eyebrow">O ponto de partida</div>
+  <h2>São duas empresas debaixo do mesmo teto. Só uma é conhecida.</h2>
+  <p class="intro">Para quem passa na porta de qualquer uma das duas lojas, a Fisiodero é uma loja de cosméticos: Kérastase, L'Oréal, La Roche-Posay, descartáveis. É por isso que a marca é lembrada. O salão, a estética, o Protocolo Anna Pegova e o SPA dos pés estão lá dentro, mas <strong>quase ninguém fora da clientela atual sabe que eles existem.</strong></p>
+  <p class="intro">Até o nome atrapalha: quem busca "Fisiodero Alphaville" no Google encontra, misturadas, várias clínicas de fisioterapia. Quem ainda não conhece a marca não adivinha o que tem lá dentro. Esse é o trabalho do Instagram: <strong>mostrar a casa por dentro, para quem mora a cinco minutos dela.</strong></p>
+  <div class="trio">
+    <div class="t"><div class="lbl">Conhecida</div><h4>A loja</h4><p>Marcas profissionais, retirada na hora, frete grátis acima de R$ 199. É o que traz a cliente hoje.</p></div>
+    <div class="t on"><div class="lbl">Pouco conhecida</div><h4>O salão e a estética</h4><p>Cabelo, unhas, sobrancelha, maquiagem, laser, massagem e skin care coreano. É onde está o crescimento.</p></div>
+    <div class="t"><div class="lbl">Subaproveitado</div><h4>O grupo de promoções</h4><p>Já vende sem custo de anúncio, mas só cresce no boca a boca.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">A tese</div>
+  <h2>Mesma cliente, dois motivos para voltar.</h2>
+  <p class="intro">Quem compra a linha Joico na prateleira é a cliente ideal da hidratação Joico no salão. Quem faz o Protocolo Anna Pegova sai precisando da rotina de casa. <strong>O produto puxa o serviço e o serviço puxa o produto.</strong> Por isso o plano não trata loja e salão como duas campanhas separadas: trata os dois como um ciclo só.</p>
+  <p class="quote">Toda compra é um <em>agendamento</em> em potencial. Todo agendamento termina numa <em>compra</em>.</p>
+  <div class="cycle" aria-label="Ciclo da cliente">
+    <span>Vê no Instagram</span><i>→</i><span>Segue o perfil</span><i>→</i><span class="hl">Entra no grupo</span><i>→</i><span class="hl">Agenda ou pede</span><i>→</i><span>Leva o produto para casa</span><i>→</i><span>Volta</span>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Como o plano funciona</div>
+  <h2>Primeiro ser vista, depois ser lembrada, então ser escolhida.</h2>
+  <p class="intro">Todo anúncio fica restrito a Alphaville e arredores: Tamboré, Aldeia da Serra, Santana de Parnaíba e Barueri. Cada pessoa passa por três etapas, e cada etapa pede um tipo de vídeo diferente.</p>
+  <div class="stages">
+    <div class="st">
+      <div class="bar"></div>
+      <h3>Descoberta</h3>
+      <div class="sub">Quem ainda não segue a Fisiodero</div>
+      <dl><dt>O que fazemos</dt><dd>Vídeos curtos de bastidor, transformação e resultado, entregues às mulheres da região.</dd>
+      <dt>O que isso gera</dt><dd>Seguidoras novas da região e uma marca que passa a ser reconhecida.</dd></dl>
+    </div>
+    <div class="st">
+      <div class="bar"></div>
+      <h3>Consideração</h3>
+      <div class="sub">Quem assistiu, curtiu ou já segue</div>
+      <dl><dt>O que fazemos</dt><dd>Explicamos o serviço, mostramos cliente real, preço e diferença entre as opções.</dd>
+      <dt>O que isso gera</dt><dd>Desejo, confiança e novas entradas no grupo de promoções.</dd></dl>
+    </div>
+    <div class="st">
+      <div class="bar"></div>
+      <h3>Decisão</h3>
+      <div class="sub">Quem já demonstrou interesse</div>
+      <dl><dt>O que fazemos</dt><dd>Convite direto com horário, valor e um botão que abre o WhatsApp com a mensagem pronta.</dd>
+      <dt>O que isso gera</dt><dd>Agenda preenchida e pedidos de produto.</dd></dl>
+    </div>
+  </div>
+  <p class="aside">O anúncio de Decisão só aparece para quem já passou pelas duas etapas anteriores. Por isso o agendamento sai mais barato do que anunciar direto para quem nunca ouviu falar da loja.</p>
+</section>
+
+<section>
+  <div class="eyebrow">O que gravar · serviços</div>
+  <h2>Quatro linhas de serviço, um roteiro para cada.</h2>
+  <p class="intro">Para cada linha: o que gravar em cada etapa e a frase do botão de agendamento. Todo vídeo é vertical, tem de 15 a 40 segundos e <strong>começa com algo acontecendo</strong>, nunca com o logo.</p>
+
+  <article class="line">
+    <div class="hd">
+      <h3>Unhas e pés</h3>
+      <div class="chips"><span>Manicure e pedicure</span><span>Unha de gel · esmaltação + cutilagem</span><span>SPA dos pés</span></div>
+      <p class="role"><strong>O papel dela:</strong> é a porta de entrada. Serviço frequente, que traz a cliente toda semana e apresenta o resto da casa.</p>
+    </div>
+    <div class="rows">
+      <div class="row r1"><div class="k">Descoberta</div><ul>
+        <li>Close da cutilagem, sem fala, só o som (formato ASMR, que retém muito).</li>
+        <li>Antes e depois do SPA dos pés em 10 segundos.</li>
+        <li>As cores da estação testadas nas mãos da equipe.</li></ul></div>
+      <div class="row r2"><div class="k">Consideração</div><ul>
+        <li>A manicure explica em 20 segundos quanto dura a unha de gel e como cuidar.</li>
+        <li>Cliente real conta por que trocou a esmaltação comum pelo gel.</li>
+        <li>O ritual completo do SPA dos pés, etapa por etapa.</li></ul></div>
+      <div class="row r3"><div class="k">Decisão</div><ul>
+        <li>Horários livres da semana e valor na tela: "tem horário quinta e sexta".</li>
+        <li>Convite de sexta-feira: "fim de semana chegando, seus pés merecem".</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA de agendamento</div><div class="say">"Agende sua unha de gel pelo WhatsApp. Tem horário essa semana."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero agendar unha de gel / SPA dos pés.</div>
+    </div>
+  </article>
+
+  <article class="line">
+    <div class="hd">
+      <h3>Cabelo</h3>
+      <div class="chips"><span>Escova</span><span>Corte</span><span>Retoque de raiz</span><span>Penteado</span><span>Hidratação Joico <b>R$ 250</b></span><span>Reconstrução capilar <b>R$ 350</b></span></div>
+      <p class="role"><strong>O papel dela:</strong> é a linha mais ligada à prateleira. Todo procedimento termina com um produto de manutenção para casa.</p>
+    </div>
+    <div class="rows">
+      <div class="row r1"><div class="k">Descoberta</div><ul>
+        <li>Transformação de escova ou penteado, com a virada no final.</li>
+        <li>O fio depois da reconstrução em câmera lenta: o brilho vende sozinho.</li>
+        <li>Retoque de raiz: raiz aparente, depois a cor uniforme.</li></ul></div>
+      <div class="row r2"><div class="k">Consideração</div><ul>
+        <li>A cabeleireira explica a diferença entre hidratação (R$ 250) e reconstrução (R$ 350) e qual das duas o cabelo precisa.</li>
+        <li>O teste do fio antes e depois, mostrando a elasticidade.</li>
+        <li>Penteado de evento: prova, bastidor, cliente pronta.</li></ul></div>
+      <div class="row r3"><div class="k">Decisão</div><ul>
+        <li>Preço na tela e horários da semana.</li>
+        <li>Combo: reconstrução no salão + kit Joico de manutenção para levar para casa.</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA de agendamento</div><div class="say">"Agende sua hidratação Joico (R$ 250) ou reconstrução (R$ 350) pelo WhatsApp. Tem horário essa semana."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero agendar hidratação Joico / reconstrução capilar.</div>
+    </div>
+  </article>
+
+  <article class="line">
+    <div class="hd">
+      <h3>Rosto e olhar</h3>
+      <div class="chips"><span>Sobrancelha · brow lamination</span><span>Maquiagem com produtos nacionais e preço acessível</span></div>
+      <p class="role"><strong>O papel dela:</strong> resultado imediato e muito visual. É o conteúdo que mais gera salvamento e compartilhamento.</p>
+    </div>
+    <div class="rows">
+      <div class="row r1"><div class="k">Descoberta</div><ul>
+        <li>Brow lamination: antes e depois, lado a lado.</li>
+        <li>Maquiagem pronta em 30 segundos, em timelapse.</li>
+        <li>"Maquiagem de evento em Alphaville sem pagar preço de maquiador de noiva."</li></ul></div>
+      <div class="row r2"><div class="k">Consideração</div><ul>
+        <li>Quanto tempo dura a brow lamination e para quem ela é indicada.</li>
+        <li>A maquiadora mostra os produtos nacionais que usa, todos à venda na loja.</li>
+        <li>Depoimento da cliente depois do evento.</li></ul></div>
+      <div class="row r3"><div class="k">Decisão</div><ul>
+        <li>Datas de formatura e festas de fim de ano, com valor da maquiagem na tela.</li>
+        <li>Horários livres da semana para sobrancelha.</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA de agendamento</div><div class="say">"Vai ter evento? Agende sua maquiagem pelo WhatsApp antes que a agenda feche."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero agendar maquiagem / brow lamination.</div>
+    </div>
+  </article>
+
+  <article class="line">
+    <div class="hd">
+      <h3>Pele e estética</h3>
+      <div class="chips"><span>Protocolo exclusivo Anna Pegova · Skin Care Coreano <b>R$ 499</b></span><span>Laser</span><span>Tratamentos de pele</span><span>Massagem</span></div>
+      <p class="role"><strong>O papel dela:</strong> o maior ticket da casa, e a linha que posiciona a Fisiodero como premium.</p>
+    </div>
+    <div class="rows">
+      <div class="row r1"><div class="k">Descoberta</div><ul>
+        <li>O protocolo coreano em etapas: close de textura, luz, a pele iluminada (o efeito "glass skin").</li>
+        <li>"O que é skin care coreano" explicado em 20 segundos.</li>
+        <li>Massagem: o ambiente, o silêncio, o som.</li></ul></div>
+      <div class="row r2"><div class="k">Consideração</div><ul>
+        <li>A profissional explica as etapas do protocolo e por que ele é exclusivo da Fisiodero.</li>
+        <li>Pele antes e depois, com a mesma luz e o mesmo ângulo.</li>
+        <li>Dúvidas sobre o laser: dói? Quantas sessões? Quando aparece o resultado?</li></ul></div>
+      <div class="row r3"><div class="k">Decisão</div><ul>
+        <li>"Protocolo Anna Pegova por R$ 499": vagas da semana na tela.</li>
+        <li>Laser, tratamentos de pele e massagem: horários livres da semana e valor na tela.</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA de agendamento</div><div class="say">"Agende seu Protocolo Anna Pegova pelo WhatsApp. Vagas limitadas por semana."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero agendar o Protocolo Skin Care Coreano.</div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="eyebrow">O que gravar · produtos</div>
+  <h2>A prateleira também vira anúncio.</h2>
+  <p class="intro">A campanha de produtos tem outro papel: gerar pedido rápido de quem já usa essas marcas. A mulher de Alphaville que usa Kérastase compra em algum lugar. <strong>O objetivo é que esse lugar fique a cinco minutos da casa dela.</strong></p>
+  <article class="line">
+    <div class="hd">
+      <h3>Promoções da loja</h3>
+      <div class="chips"><span>Kérastase</span><span>L'Oréal Professionnel</span><span>Joico</span><span>La Roche-Posay</span><span>Vichy</span><span>Maquiagem nacional</span><span>Descartáveis</span></div>
+      <p class="role"><strong>O papel dela:</strong> gerar venda direta e levar a cliente de produto até o salão.</p>
+    </div>
+    <div class="rows">
+      <div class="row r1"><div class="k">Descoberta</div><ul>
+        <li>"Chegou essa semana": produtos novos sendo abertos na loja.</li>
+        <li>"3 produtos que nossa cabeleireira usa no salão."</li>
+        <li>Textura em close: o creme na mão, o óleo no fio.</li></ul></div>
+      <div class="row r2"><div class="k">Consideração</div><ul>
+        <li>A profissional do salão indica o produto certo para cada tipo de cabelo ou pele.</li>
+        <li>A rotina de casa depois do procedimento, que liga o produto ao serviço.</li></ul></div>
+      <div class="row r3"><div class="k">Decisão</div><ul>
+        <li>Promoção da semana com preço na tela, 5% de desconto no Pix, frete grátis acima de R$ 199 e retirada na loja.</li>
+        <li>Última chance: "a promoção acaba no domingo".</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA de pedido</div><div class="say">"Peça pelo WhatsApp e retire hoje na loja, ou receba em casa."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero fazer um pedido: [nome do produto].</div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="eyebrow">Grupo de promoções</div>
+  <h2>Uma página feita para encher o grupo de promoções.</h2>
+  <p class="intro">O grupo já funciona: é onde as promoções saem e onde a venda acontece sem custo de anúncio. Falta fazer o grupo crescer de propósito. A proposta é <strong>uma página simples, com um único objetivo</strong>, que recebe o tráfego dos anúncios e de todos os pontos de contato da loja: bio do Instagram, QR code no caixa, sacola e cartão de agendamento.</p>
+  <div class="lp">
+    <div class="phone" aria-label="Rascunho da página de captação">
+      <div class="screen">
+        <div class="top">
+          <div class="brand">Fisiodero · Grupo VIP</div>
+          <h4>As melhores promoções da Fisiodero saem primeiro aqui.</h4>
+          <p>Descontos da semana em Kérastase, L'Oréal e La Roche-Posay, e horários relâmpago no salão, direto no seu WhatsApp.</p>
+        </div>
+        <div class="form">
+          <div class="field">Seu nome</div>
+          <div class="field">Seu WhatsApp</div>
+          <div class="qlab">O que mais te interessa?</div>
+          <div class="opts"><span class="sel">Cabelo</span><span>Pele</span><span>Unhas</span><span class="sel">Produtos</span></div>
+          <div class="btn">Quero entrar no grupo</div>
+          <div class="fine">Sem spam. Só promoção de verdade.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ul class="why">
+        <li><strong>Pedimos nome e WhatsApp antes de enviar para o grupo.</strong> Se a pessoa sair do grupo, o contato continua sendo da Fisiodero.</li>
+        <li><strong>A pergunta "o que mais te interessa"</strong> já separa quem quer produto de quem quer serviço, e cada uma recebe a oferta certa.</li>
+        <li><strong>Um benefício de boas-vindas</strong> (por exemplo, um cupom na primeira compra) aumenta muito a entrada. O valor definimos juntos.</li>
+        <li><strong>O site já tem o Clube Fisiodero.</strong> A sugestão é que o grupo seja a porta de entrada do Clube: um nome só, uma marca só.</li>
+        <li><strong>Um grupo de WhatsApp comporta até 1.024 pessoas.</strong> Quando chegar perto disso, organizamos em Comunidade, com grupos por interesse.</li>
+      </ul>
+      <div class="rec">
+        <h4>O que gravar para essa campanha</h4>
+        <ul>
+          <li>"O que acontece no grupo": prints reais de promoções que já saíram.</li>
+          <li>A atendente com o celular na mão: "essa promoção só saiu no grupo".</li>
+          <li>Stories com contagem regressiva para a próxima promoção relâmpago.</li>
+        </ul>
+      </div>
+      <div class="cta" style="margin-top:14px;border-radius:14px">
+        <div><div class="lbl">CTA do grupo</div><div class="say">"Entre no grupo e receba as promoções antes de todo mundo."</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">O que gravar · as duas lojas</div>
+  <h2>Um vídeo para quem quer ir até a loja.</h2>
+  <p class="intro">A Fisiodero tem duas lojas físicas, e muita gente só conhece uma delas. Aproveitamos a primeira tarde de gravação para fazer <strong>um vídeo "Onde estamos"</strong>, que mostra as duas e deixa claro como chegar em cada uma.</p>
+  <div class="addr">
+    <div class="pin"><div class="lbl">Loja 1</div><div class="ad">Alameda Rio Negro, 1030</div><p>Alphaville, Barueri/SP</p></div>
+    <div class="pin"><div class="lbl">Loja 2</div><div class="ad">Calçada das Violetas, 44</div><p>Alphaville, Barueri/SP</p></div>
+  </div>
+  <article class="line">
+    <div class="rows">
+      <div class="row r1"><div class="k">O que gravar</div><ul>
+        <li>A chegada em cada loja: fachada, entrada e a referência de quem vem de carro.</li>
+        <li>Uma volta rápida por dentro: prateleira, salão e sala de estética.</li>
+        <li>Os dois endereços e o horário de funcionamento na tela, do começo ao fim.</li>
+        <li>Fechamento com a equipe: "escolha a loja mais perto de você".</li></ul></div>
+      <div class="row r2"><div class="k">Onde ele entra</div><ul>
+        <li>Fixado no topo do perfil e no destaque "Como chegar".</li>
+        <li>Anúncio de Descoberta para quem mora perto de cada loja.</li>
+        <li>Enviado no WhatsApp logo depois de toda confirmação de agendamento.</li></ul></div>
+    </div>
+    <div class="cta">
+      <div><div class="lbl">CTA do vídeo</div><div class="say">"Agende pelo WhatsApp e venha na loja mais perto de você."</div></div>
+      <div class="bubble"><small>Mensagem pronta</small>Oi! Quero agendar um horário. Qual loja fica mais perto de mim?</div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="eyebrow">Na prática</div>
+  <h2>Uma tarde de gravação a cada quinze dias resolve o mês.</h2>
+  <div class="two">
+    <div class="box">
+      <h4>Regras de gravação</h4>
+      <ul>
+        <li>Celular na vertical. Nos dois primeiros segundos, aparece o resultado ou a ação.</li>
+        <li>Luz natural ou ring light, fundo limpo e organizado.</li>
+        <li>Legenda na tela: a maioria assiste sem som.</li>
+        <li>A equipe aparece. Rosto conhecido gera confiança, e a cliente chega já sabendo quem vai atender.</li>
+        <li>Antes e depois sempre com a mesma luz, o mesmo ângulo e sem filtro.</li>
+        <li>Autorização de uso de imagem por escrito de toda cliente que aparecer.</li>
+        <li>Sem música com direito autoral nos vídeos que viram anúncio.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>O que produzir por mês</h4>
+      <div class="mix">
+        <div><span>Vídeos de Descoberta</span><b>8</b></div>
+        <div><span>Vídeos de Consideração</span><b>5</b></div>
+        <div><span>Vídeos de Decisão (um por linha)</span><b>4</b></div>
+        <div><span>Vídeos de produtos</span><b>4</b></div>
+        <div><span>Vídeos do grupo</span><b>2</b></div>
+        <div><span class="tot">Total</span><b>23</b></div>
+      </div>
+      <p class="aside" style="margin-top:12px">Mais o vídeo das duas lojas, gravado uma vez e refeito só quando algo mudar.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Investimento em mídia</div>
+  <h2>R$ 2.000 por mês, divididos entre todas as campanhas.</h2>
+  <p class="intro">É o valor pago à Meta pelos anúncios, cerca de R$ 66 por dia. A gestão é cobrada à parte. A maior fatia vai para onde o dinheiro volta mais rápido, os agendamentos, <strong>sem deixar de construir a audiência que vai alimentar os próximos meses.</strong></p>
+  <div class="strip" role="img" aria-label="Divisão do orçamento: Descoberta 25%, Consideração 15%, Agendamentos 35%, Produtos 12,5%, Grupo 12,5%">
+    <div class="c1" style="width:25%">25%</div><div class="c2" style="width:15%">15%</div><div class="c3" style="width:35%">35%</div><div class="c4" style="width:12.5%">12,5%</div><div class="c5" style="width:12.5%">12,5%</div>
+  </div>
+  <div class="legend">
+    <div><b>R$ 500</b><i class="c1"></i>Descoberta: seguidoras e marca</div>
+    <div><b>R$ 300</b><i class="c2"></i>Consideração: quem já viu</div>
+    <div><b>R$ 700</b><i class="c3"></i>Agendamentos no WhatsApp</div>
+    <div><b>R$ 250</b><i class="c4"></i>Pedidos de produtos</div>
+    <div><b>R$ 250</b><i class="c5"></i>Grupo de promoções</div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Projeção · primeiro mês</div>
+  <h2>O que R$ 2.000 devem trazer no primeiro mês.</h2>
+  <p class="intro">Três cenários com a mesma verba. O primeiro mês é de aprendizado, porque os anúncios ainda estão descobrindo quem responde melhor. Por isso usamos o <strong>cenário provável</strong> como referência, e não o otimista.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Com R$ 2.000 no mês</th><th>Conservador</th><th class="hi">Provável</th><th>Otimista</th></tr></thead>
+    <tbody>
+      <tr><td>Seguidoras novas da região</td><td>360</td><td class="hi">500</td><td>710</td></tr>
+      <tr><td>Conversas para agendamento</td><td>39</td><td class="hi">50</td><td>70</td></tr>
+      <tr><td>Agendamentos fechados</td><td>10</td><td class="hi">17</td><td>28</td></tr>
+      <tr><td>Conversas para pedido de produto</td><td>17</td><td class="hi">23</td><td>31</td></tr>
+      <tr><td>Pedidos fechados</td><td>3</td><td class="hi">7</td><td>11</td></tr>
+      <tr><td>Novos contatos no grupo</td><td>50</td><td class="hi">71</td><td>100</td></tr>
+      <tr class="sum"><td>Leads no mês (conversas + grupo)</td><td>106</td><td class="hi">144</td><td>201</td></tr>
+      <tr class="sum"><td>Faturamento gerado pelos anúncios</td><td>R$ 2.700</td><td class="hi">R$ 5.500</td><td>R$ 9.650</td></tr>
+      <tr class="sum"><td>Retorno sobre o investimento em mídia</td><td>1,4×</td><td class="hi"><span class="x">2,8×</span></td><td>4,8×</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prem"><b>Como chegamos nesses números (cenário provável):</b> R$ 14 por conversa de agendamento e R$ 11 por conversa de produto; 35% das conversas de agendamento viram horário marcado, com ticket médio de R$ 220 (a média entre uma unha de R$ 100 e um protocolo de R$ 499); 30% das conversas de produto viram pedido de R$ 180; R$ 3,50 por contato no grupo, com 4% dos membros comprando por mês (R$ 150). <b>Não entram na conta:</b> a cliente que volta todo mês, a venda de balcão de quem viu a loja no Instagram e o valor das seguidoras que ainda não compraram.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Escada de investimento</div>
+  <h2>A verba sobe quando o retorno pede, nunca antes.</h2>
+  <p class="intro">Todo início de mês olhamos um número: <strong>quanto cada real em anúncio devolveu em faturamento.</strong> É ele que decide o mês seguinte.</p>
+  <div class="gates">
+    <div class="gate up"><div class="v">3× ou mais</div><p>E ainda tem horário livre na agenda: a verba sobe de R$ 500 no mês seguinte. No primeiro mês, a régua é 2,5×.</p></div>
+    <div class="gate hold"><div class="v">Entre 2× e 3×</div><p>Mantemos a verba, trocamos os vídeos mais fracos e revisamos o atendimento no WhatsApp.</p></div>
+    <div class="gate down"><div class="v">Abaixo de 2×</div><p>A verba volta um degrau até descobrirmos o que travou: o vídeo, a oferta ou a resposta.</p></div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Cenário provável</th><th>Verba</th><th>Leads</th><th>Agendamentos</th><th>Pedidos</th><th>Faturamento</th><th>Retorno</th></tr></thead>
+    <tbody>
+      <tr><td>Outubro · aprendizado</td><td>R$ 2.000</td><td>144</td><td>17</td><td>7</td><td>R$ 5.500</td><td class="x">2,8×</td></tr>
+      <tr><td>Novembro · Black Friday</td><td>R$ 2.500</td><td>205</td><td>25</td><td>10</td><td>R$ 8.250</td><td class="x">3,3×</td></tr>
+      <tr><td>Dezembro · festas e formaturas</td><td>R$ 3.000</td><td>232</td><td>28</td><td>11</td><td>R$ 9.900</td><td class="x">3,3×</td></tr>
+      <tr><td>Janeiro · férias, verba mantida</td><td>R$ 3.000</td><td>232</td><td>28</td><td>11</td><td>R$ 10.600</td><td class="x">3,5×</td></tr>
+      <tr><td>Fevereiro</td><td>R$ 3.500</td><td>256</td><td>31</td><td>12</td><td>R$ 12.200</td><td class="x">3,5×</td></tr>
+      <tr><td>Março</td><td>R$ 4.000</td><td>278</td><td>34</td><td>13</td><td>R$ 13.800</td><td class="x">3,4×</td></tr>
+      <tr class="sum"><td>Seis meses</td><td>R$ 18.000</td><td>1.347</td><td>163</td><td>64</td><td>R$ 60.200</td><td class="x">3,3×</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prem"><b>Por que o retorno melhora e depois estabiliza:</b> a partir do segundo mês os anúncios ficam cerca de 12% mais baratos, porque já sabemos quais vídeos funcionam, e o grupo acumula membros que continuam comprando sem custo novo. É isso que faz janeiro render mais que dezembro com a mesma verba. Em janeiro seguramos a verba mesmo com retorno acima de 3×, porque muitas famílias de Alphaville viajam nas férias e a agenda costuma ter menos procura. Acima de R$ 3.000 consideramos um custo um pouco maior, porque Alphaville é uma região de tamanho limitado e os anúncios passam a aparecer mais vezes para as mesmas pessoas. <b>O retorno é medido em faturamento.</b> O lucro depende da margem de cada serviço e produto.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Como vamos medir</div>
+  <h2>Quatro números, todo mês.</h2>
+  <div class="kpis">
+    <div><b>Seguidoras novas</b>da região, e quanto custou cada uma.</div>
+    <div><b>Conversas no WhatsApp</b>separadas entre agendamento e pedido.</div>
+    <div><b>Entradas no grupo</b>e quanto custou cada contato.</div>
+    <div><b>Retorno em faturamento</b>agendamentos e pedidos fechados, divididos pela verba.</div>
+  </div>
+  <p class="aside">Para o último número existir, a equipe precisa anotar de onde veio cada cliente que chega pelo WhatsApp. Vamos combinar juntos um jeito simples de fazer isso.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Para começar</div>
+  <h2>O que precisamos de vocês antes do primeiro anúncio.</h2>
+  <ul class="qs">
+    <li><b>Quem responde o WhatsApp, e em quanto tempo?</b>Conversa que espera mais de 15 minutos por resposta esfria, e o anúncio que a gerou vira verba perdida.</li>
+    <li><b>Preços dos serviços de entrada</b>Manicure, pedicure, gel, escova, sobrancelha e maquiagem. Eles aparecem nos vídeos de Decisão e ajustam o ticket médio da projeção.</li>
+    <li><b>Como funciona a entrega em Alphaville</b>Se sai no mesmo dia, o CTA de produtos fica muito mais forte.</li>
+    <li><b>O grupo hoje</b>Quantas pessoas tem, com que frequência saem promoções e qual benefício de boas-vindas podemos oferecer.</li>
+    <li><b>O que cada loja atende</b>Se algum serviço existe em só uma das lojas, isso precisa aparecer no vídeo das duas lojas e na resposta do WhatsApp.</li>
+  </ul>
+</section>
+
+<div class="close">
+  <h2>O próximo passo é uma conversa de 30 minutos.</h2>
+  <p>Fechamos as respostas acima, confirmamos a verba de R$ 2.000 do primeiro mês e marcamos a primeira tarde de gravação. A partir dela, a Fisiodero leva de duas a três semanas para ter a primeira leva de vídeos no ar.</p>
+  <div class="sig">Felipe Cavalcanti · Marketing e tráfego pago</div>
+</div>
+
+</main>
+<footer class="wrap">Documento preparado para a Fisiodero · Alphaville, Barueri/SP · setembro de 2026</footer>
+</body>
+</html>
